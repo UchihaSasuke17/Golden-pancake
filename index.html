@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise for Tanu!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="inner-container">
+            <!-- URL Bar -->
+            <div class="url-bar">
+                <i class="fas fa-lock lock-icon"></i>
+                <span class="url-text">uchihasasuke17.github.io/HappyBirthday-Tanu</span>
+            </div>
+            
+            <!-- Header -->
+            <div class="header">
+                <h1>Birthday Surprise!</h1>
+                <p>Answer these for a surprise 🥰</p>
+            </div>
+            
+            <!-- Screen 1: Question 1 -->
+            <div id="screen-1" class="screen active">
+                <div class="question-number">Question 1 of 6</div>
+                <h2 class="question-text">Your name!!</h2>
+                <div class="options-container">
+                    <div class="option moon-option" data-option="Tanu">Tanu</div>
+                    <div class="option moon-option" data-option="Tanuja">Tanuja</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 16.6%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 2: Question 2 -->
+            <div id="screen-2" class="screen">
+                <div class="question-number">Question 2 of 6</div>
+                <h2 class="question-text">The year you are born?</h2>
+                <div class="options-container">
+                    <div class="option moon-option" data-option="2008">2008</div>
+                    <div class="option moon-option" data-option="2007">2007</div>
+                    <div class="option moon-option" data-option="2006">2006</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 33.2%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 3: Question 3 -->
+            <div id="screen-3" class="screen">
+                <div class="question-number">Question 3 of 6</div>
+                <h2 class="question-text">Choose a number</h2>
+                <div class="options-container">
+                    <div class="option moon-option" data-option="07">07</div>
+                    <div class="option moon-option" data-option="17">17</div>
+                    <div class="option moon-option" data-option="23">23</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 49.8%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 4: Question 4 -->
+            <div id="screen-4" class="screen">
+                <div class="question-number">Question 4 of 6</div>
+                <h2 class="question-text">What do you love the most?</h2>
+                <div class="options-container">
+                    <div class="option moon-option" data-option="Beach">Beach</div>
+                    <div class="option moon-option" data-option="Mountain">Mountain</div>
+                    <div class="option moon-option" data-option="Night">Night full of stars</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 66.4%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 5: Question 5 -->
+            <div id="screen-5" class="screen">
+                <div class="question-number">Question 5 of 6</div>
+                <h2 class="question-text">What's your dream vacation spot?</h2>
+                <div class="options-container">
+                    <div class="option moon-option" data-option="Beach">Beach</div>
+                    <div class="option moon-option" data-option="Mountains">Mountains</div>
+                    <div class="option moon-option" data-option="City">City</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 83%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 6: Final Question -->
+            <div id="screen-6" class="screen">
+                <div class="question-number">Question 6 of 6</div>
+                <h2 class="question-text">Are you ready for your birthday presentation?</h2>
+                <div id="single-yes" class="single-yes">Yes!</div>
+                <div class="progress-container">
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final Birthday Screen -->
+            <div id="birthday-screen" class="screen">
+                <div class="birthday-screen">
+                    <h2 class="question-text">🎂 Happy Birthday! 🎂</h2>
+                    <div class="cake-container">
+                        <div class="cake">
+                            <div class="cake-layer cake-base"></div>
+                            <div class="cake-layer cake-middle-layer"></div>
+                            <div class="cake-layer cake-top-layer"></div>
+                            <div class="cake-layer cake-frosting"></div>
+                            
+                            <div class="candle candle-1">
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle candle-2">
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle candle-3">
+                                <div class="flame"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="birthday-text" id="birthday-text"></div>
+                    <p style="color: #d0d0ff; font-size: 1.2rem; margin-top: 20px;">
+                        Wishing you the happiest birthday! May all your dreams come true! 🎉✨
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="timer-container" class="timer-container">
+        <div class="timer-text">Starting in: <span id="timer-count">5</span></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
