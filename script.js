@@ -5,26 +5,19 @@ let audioContext = null;
 let musicGain = null;
 let melodyInterval = null;
 
-// REAL Carol of the Bells - The actual melody notes
-const carolNotes = [
-    // First phrase - "Hark how the bells"
-    659.25, 659.25, 659.25, 523.25, 659.25, 783.99, 659.25, 587.33,
-    523.25, 493.88, 523.25, 587.33, 659.25, 659.25, 659.25, 523.25,
-    
-    // Second phrase - "Sweet silver bells"
-    659.25, 783.99, 659.25, 587.33, 523.25, 493.88, 523.25, 587.33,
-    659.25, 659.25, 659.25, 783.99, 880.00, 987.77, 880.00, 783.99,
-    
-    // Third phrase - "All seem to say"
-    659.25, 587.33, 523.25, 493.88, 523.25, 587.33, 659.25, 659.25,
-    659.25, 783.99, 880.00, 987.77, 1046.50, 987.77, 880.00, 783.99,
-    
-    // Fourth phrase - "Throw cares away"
-    659.25, 587.33, 523.25, 493.88, 523.25, 587.33, 659.25, 698.46,
-    783.99, 880.00, 987.77, 1046.50, 987.77, 880.00, 783.99, 659.25
+// Happy Birthday melody notes
+const happyBirthdayNotes = [
+    // "Happy birthday to you"
+    523.25, 523.25, 587.33, 523.25, 698.46, 659.25,
+    // "Happy birthday to you"  
+    523.25, 523.25, 587.33, 523.25, 783.99, 698.46,
+    // "Happy birthday dear [name]" 
+    523.25, 523.25, 1046.50, 880.00, 698.46, 659.25, 587.33,
+    // "Happy birthday to you!"
+    1046.50, 1046.50, 880.00, 698.46, 783.99, 698.46
 ];
 
-function startCarolMusic() {
+function startHappyBirthdayMusic() {
     if (musicStarted) return;
     musicStarted = true;
     
@@ -32,75 +25,45 @@ function startCarolMusic() {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         musicGain = audioContext.createGain();
         musicGain.connect(audioContext.destination);
-        musicGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+        musicGain.gain.setValueAtTime(0.25, audioContext.currentTime);
         
         // Start playing immediately
-        playCarolOfBells();
+        playHappyBirthday();
         
-        // Loop every 12 seconds
-        melodyInterval = setInterval(playCarolOfBells, 12000);
+        // Loop every 8 seconds
+        melodyInterval = setInterval(playHappyBirthday, 8000);
         
-        console.log("🎵 Carol of the Bells started!");
+        console.log("🎵 Happy Birthday music started!");
     } catch(e) {
         console.log("Audio error:", e);
     }
 }
 
-function playCarolOfBells() {
+function playHappyBirthday() {
     if (!audioContext) return;
     
     let time = audioContext.currentTime;
     
-    // Play each note with proper bell sound
-    carolNotes.forEach((note, index) => {
-        const noteTime = time + (index * 0.15); // Fast tempo for bells
+    // Play each note
+    happyBirthdayNotes.forEach((note, index) => {
+        const noteTime = time + (index * 0.35); // Slower tempo for birthday song
         
-        // Create bell sound with harmonics
-        const osc1 = audioContext.createOscillator();
-        const osc2 = audioContext.createOscillator();
-        const osc3 = audioContext.createOscillator();
+        // Main melody oscillator
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
         
-        const gain1 = audioContext.createGain();
-        const gain2 = audioContext.createGain();
-        const gain3 = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(musicGain);
         
-        osc1.connect(gain1);
-        osc2.connect(gain2);
-        osc3.connect(gain3);
+        osc.frequency.setValueAtTime(note, noteTime);
+        osc.type = 'sine'; // Soft sine wave for gentle sound
         
-        gain1.connect(musicGain);
-        gain2.connect(musicGain);
-        gain3.connect(musicGain);
+        // Volume envelope
+        gain.gain.setValueAtTime(0.2, noteTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.3);
         
-        // Main bell tone
-        osc1.frequency.setValueAtTime(note, noteTime);
-        osc1.type = 'sine';
-        
-        // Harmonic (octave higher) for brightness
-        osc2.frequency.setValueAtTime(note * 2, noteTime);
-        osc2.type = 'sine';
-        
-        // Harmonic (fifth) for richness
-        osc3.frequency.setValueAtTime(note * 1.5, noteTime);
-        osc3.type = 'sine';
-        
-        // Bell envelope - quick attack, decay
-        gain1.gain.setValueAtTime(0.15, noteTime);
-        gain1.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.3);
-        
-        gain2.gain.setValueAtTime(0.08, noteTime);
-        gain2.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.25);
-        
-        gain3.gain.setValueAtTime(0.05, noteTime);
-        gain3.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.2);
-        
-        osc1.start(noteTime);
-        osc2.start(noteTime);
-        osc3.start(noteTime);
-        
-        osc1.stop(noteTime + 0.3);
-        osc2.stop(noteTime + 0.25);
-        osc3.stop(noteTime + 0.2);
+        osc.start(noteTime);
+        osc.stop(noteTime + 0.3);
     });
 }
 
@@ -152,7 +115,7 @@ function nextPage() {
 document.getElementById('next-1').addEventListener('click', function() {
     const name = document.getElementById('name-input').value;
     if (name.trim()) {
-        startCarolMusic();
+        startHappyBirthdayMusic();
         nextPage();
     } else {
         alert('Please enter your name!');
