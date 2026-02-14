@@ -3,131 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Surprise for Tanu!</title>
+    <title>Happy Birthday Tanu! 🎂</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="inner-container">
-            <!-- URL Bar -->
-            <div class="url-bar">
-                <i class="fas fa-lock lock-icon"></i>
-                <span class="url-text">uchihasasuke17.github.io/HappyBirthday-Tanu</span>
+    <div class="book-container">
+        <div class="book">
+            <!-- Cover Page -->
+            <div class="page cover-page active" id="cover">
+                <div class="cover-content">
+                    <h1 class="cover-title">✨ Tanu's Birthday Story ✨</h1>
+                    <p class="cover-subtitle">A special journey just for you</p>
+                    <button class="open-book-btn" id="openBook">📖 Open the Book</button>
+                </div>
             </div>
-            
-            <!-- Header -->
-            <div class="header">
-                <h1>Birthday Surprise!</h1>
-                <p>Answer these for a surprise 🥰</p>
-            </div>
-            
-            <!-- Screen 1: Question 1 -->
-            <div id="screen-1" class="screen active">
-                <div class="question-number">Question 1 of 6</div>
+
+            <!-- Page 1: Name Input -->
+            <div class="page" id="page-1">
+                <div class="page-number">Page 1</div>
                 <h2 class="question-text">Your name!!</h2>
-                <div class="options-container">
-                    <div class="option moon-option" data-option="Tanu">Tanu</div>
-                    <div class="option moon-option" data-option="Tanuja">Tanuja</div>
+                <div class="input-container">
+                    <input type="text" id="name-input" class="romantic-input" placeholder="Type your name..." autocomplete="off">
                 </div>
                 <div class="progress-container">
-                    <div class="progress-text">Progress</div>
+                    <div class="progress-text">Journey Progress</div>
                     <div class="progress-bar">
-                        <div class="progress" style="width: 16.6%"></div>
+                        <div class="progress" style="width: 12.5%"></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Screen 2: Question 2 -->
-            <div id="screen-2" class="screen">
-                <div class="question-number">Question 2 of 6</div>
+
+            <!-- Page 2: Birth Year Input -->
+            <div class="page" id="page-2">
+                <div class="page-number">Page 2</div>
                 <h2 class="question-text">The year you are born?</h2>
-                <div class="options-container">
-                    <div class="option moon-option" data-option="2008">2008</div>
-                    <div class="option moon-option" data-option="2007">2007</div>
-                    <div class="option moon-option" data-option="2006">2006</div>
+                <div class="input-container">
+                    <input type="text" id="year-input" class="romantic-input" placeholder="Enter year (e.g., 2005)" autocomplete="off">
                 </div>
                 <div class="progress-container">
-                    <div class="progress-text">Progress</div>
+                    <div class="progress-text">Journey Progress</div>
                     <div class="progress-bar">
-                        <div class="progress" style="width: 33.2%"></div>
+                        <div class="progress" style="width: 25%"></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Screen 3: Question 3 -->
-            <div id="screen-3" class="screen">
-                <div class="question-number">Question 3 of 6</div>
+
+            <!-- Page 3: Quote Page -->
+            <div class="page" id="page-3">
+                <div class="page-number">Page 3</div>
+                <div class="quote-container">
+                    <p class="quote-text">"Life is not measured by the number of breaths we take, but by the moments that take our breath away. May your next year be full of those moments. Happy Birthday. 🫰"</p>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Journey Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 37.5%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 4: Dream Place Input -->
+            <div class="page" id="page-4">
+                <div class="page-number">Page 4</div>
+                <h2 class="question-text">The place you want to go in your life</h2>
+                <div class="input-container">
+                    <input type="text" id="place-input" class="romantic-input" placeholder="Type your dream place..." autocomplete="off">
+                </div>
+                <div class="progress-container">
+                    <div class="progress-text">Journey Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 5: Paper Airplane Numbers -->
+            <div class="page" id="page-5">
+                <div class="page-number">Page 5</div>
                 <h2 class="question-text">Choose a number</h2>
-                <div class="options-container">
-                    <div class="option moon-option" data-option="07">07</div>
-                    <div class="option moon-option" data-option="17">17</div>
-                    <div class="option moon-option" data-option="23">23</div>
+                <div class="airplane-container">
+                    <div class="airplane-option" data-value="07" id="plane-07">
+                        <div class="airplane">
+                            <div class="plane-body">07</div>
+                            <div class="plane-wing"></div>
+                            <div class="plane-tail"></div>
+                        </div>
+                    </div>
+                    <div class="airplane-option" data-value="17" id="plane-17">
+                        <div class="airplane">
+                            <div class="plane-body">17</div>
+                            <div class="plane-wing"></div>
+                            <div class="plane-tail"></div>
+                        </div>
+                    </div>
+                    <div class="airplane-option" data-value="23" id="plane-23">
+                        <div class="airplane">
+                            <div class="plane-body">23</div>
+                            <div class="plane-wing"></div>
+                            <div class="plane-tail"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-text">Progress</div>
+                    <div class="progress-text">Journey Progress</div>
                     <div class="progress-bar">
-                        <div class="progress" style="width: 49.8%"></div>
+                        <div class="progress" style="width: 62.5%"></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Screen 4: Question 4 -->
-            <div id="screen-4" class="screen">
-                <div class="question-number">Question 4 of 6</div>
-                <h2 class="question-text">What do you love the most?</h2>
-                <div class="options-container">
-                    <div class="option moon-option" data-option="Beach">Beach</div>
-                    <div class="option moon-option" data-option="Mountain">Mountain</div>
-                    <div class="option moon-option" data-option="Night">Night full of stars</div>
+
+            <!-- Page 6: Treat Message -->
+            <div class="page" id="page-6">
+                <div class="page-number">Page 6</div>
+                <div class="treat-message-container">
+                    <p class="treat-message" id="treat-message"></p>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-text">Progress</div>
+                    <div class="progress-text">Journey Progress</div>
                     <div class="progress-bar">
-                        <div class="progress" style="width: 66.4%"></div>
+                        <div class="progress" style="width: 75%"></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Screen 5: Question 5 -->
-            <div id="screen-5" class="screen">
-                <div class="question-number">Question 5 of 6</div>
-                <h2 class="question-text">What's your dream vacation spot?</h2>
-                <div class="options-container">
-                    <div class="option moon-option" data-option="Beach">Beach</div>
-                    <div class="option moon-option" data-option="Mountains">Mountains</div>
-                    <div class="option moon-option" data-option="City">City</div>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-text">Progress</div>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 83%"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Screen 6: Final Question -->
-            <div id="screen-6" class="screen">
-                <div class="question-number">Question 6 of 6</div>
+
+            <!-- Page 7: Final Yes Button -->
+            <div class="page" id="page-7">
+                <div class="page-number">Page 7</div>
                 <h2 class="question-text">Are you ready for your birthday presentation?</h2>
-                <div id="single-yes" class="single-yes">Yes!</div>
+                <div class="heart-container">
+                    <div id="final-yes" class="heart-button">
+                        <span>Yes!</span>
+                    </div>
+                </div>
                 <div class="progress-container">
-                    <div class="progress-text">Progress</div>
+                    <div class="progress-text">Journey Progress</div>
                     <div class="progress-bar">
-                        <div class="progress" style="width: 100%"></div>
+                        <div class="progress" style="width: 87.5%"></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Final Birthday Screen -->
-            <div id="birthday-screen" class="screen">
+
+            <!-- Page 8: Birthday Surprise -->
+            <div class="page" id="page-8">
                 <div class="birthday-screen">
-                    <h2 class="question-text">🎂 Happy Birthday! 🎂</h2>
+                    <h2 class="birthday-title">🎂 Happy Birthday! 🎂</h2>
                     <div class="cake-container">
                         <div class="cake">
                             <div class="cake-layer cake-base"></div>
-                            <div class="cake-layer cake-middle-layer"></div>
-                            <div class="cake-layer cake-top-layer"></div>
+                            <div class="cake-layer cake-middle"></div>
+                            <div class="cake-layer cake-top"></div>
                             <div class="cake-layer cake-frosting"></div>
                             
                             <div class="candle candle-1">
@@ -141,17 +166,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="birthday-text" id="birthday-text"></div>
-                    <p style="color: #d0d0ff; font-size: 1.2rem; margin-top: 20px;">
-                        Wishing you the happiest birthday! May all your dreams come true! 🎉✨
-                    </p>
+                    <div class="final-message-container">
+                        <p class="final-message" id="final-message"></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div id="timer-container" class="timer-container">
-        <div class="timer-text">Starting in: <span id="timer-count">5</span></div>
     </div>
 
     <script src="script.js"></script>
