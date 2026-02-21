@@ -1,11 +1,22 @@
-// ===== GLOBAL VARIABLES =====
 let currentPage = 1;
-let treatCount = 0;
+let musicStarted = false;
+let selectedNumber = null;
+let audioContext = null;
+let musicGain = null;
+let melodyInterval = null;
 let poppedCount = 0;
 let complimentIndices = [];
-let audioCtx = null;
-let isMusicPlaying = false;
+const totalBalloons = 19;
 
+// Happy Birthday melody notes
+const happyBirthdayNotes = [
+    523.25, 523.25, 587.33, 523.25, 698.46, 659.25,
+    523.25, 523.25, 587.33, 523.25, 783.99, 698.46,
+    523.25, 523.25, 1046.50, 880.00, 698.46, 659.25, 587.33,
+    1046.50, 1046.50, 880.00, 698.46, 783.99, 698.46
+];
+
+// Compliments for balloons
 const compliments = [
     "Beautiful 💕",
     "Lovely 🌸",
@@ -18,205 +29,333 @@ const compliments = [
 const specialBalloon = "You 🎂";
 const funBalloon = "Try again 😜";
 
-// ===== HAPPY BIRTHDAY MUSIC =====
-function playHappyBirthday() {
-    if (isMusicPlaying) return;
-    isMusicPlaying = true;
-
+function startHappyBirthdayMusic() {
+    if (musicStarted) return;
+    musicStarted = true;
+    
     try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = audioCtx.currentTime;
-
-        // Simple Happy Birthday melody (C4, C4, D4, C4, F4, E4, C4, C4, D4, C4, G4, F4)
-        const notes = [261.63, 261.63, 293.66, 261.63, 349.23, 329.63, 261.63, 261.63, 293.66, 261.63, 392.00, 349.23];
-        let time = now;
-
-        for (let i = 0; i < notes.length; i++) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = notes[i];
-            gain.gain.setValueAtTime(0.2, time + i * 0.4);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + i * 0.4 + 0.35);
-            osc.start(time + i * 0.4);
-            osc.stop(time + i * 0.4 + 0.35);
-        }
-
-        // Loop every 5 seconds
-        setTimeout(() => {
-            if (audioCtx) playHappyBirthday();
-        }, 5000);
-    } catch (e) {
-        console.log("Audio error", e);
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        musicGain = audioContext.createGain();
+        musicGain.connect(audioContext.destination);
+        musicGain.gain.setValueAtTime(0.25, audioContext.currentTime);
+        
+        playHappyBirthday();
+        melodyInterval = setInterval(playHappyBirthday, 8000);
+        
+        console.log("🎵 Happy Birthday music started!");
+    } catch(e) {
+        console.log("Audio error:", e);
     }
 }
 
-// ===== PAGE NAVIGATION =====
-function showPage(pageNumber) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(`page${pageNumber}`).classList.add('active');
-    currentPage = pageNumber;
-
-    if (pageNumber === 14) initBalloons();
-    if (pageNumber === 19) startCakeFalling();
-}
-
-function nextPage(fromPage) {
-    if (fromPage < 19) showPage(fromPage + 1);
-}
-
-// ===== PAGE 1 =====
-function goToPage2() {
-    const name = document.getElementById('nameInput').value.trim();
-    if (name === '') {
-        alert('Please enter your name!');
-        return;
-    }
-    playHappyBirthday();   // start music on first answer
-    showPage(2);
-}
-
-// ===== PAGE 2 =====
-function goToPage3() {
-    const year = document.getElementById('yearInput').value.trim();
-    if (year === '') {
-        alert('Please enter your birth year!');
-        return;
-    }
-    showPage(3);
-}
-
-// ===== PAGE 4 - Airplanes with fly-away =====
-let planeSelected = false;
-
-function flyAway(num, element) {
-    if (planeSelected) return;
-    planeSelected = true;
-
-    // store treat count
-    if (num === 7) treatCount = 7;
-    else if (num === 17) treatCount = 8;
-    else if (num === 23) treatCount = 5;
-
-    // add fly-away class to clicked plane
-    element.classList.add('fly-away');
-
-    // disable other planes
-    document.querySelectorAll('.airplane').forEach(plane => {
-        if (plane !== element) {
-            plane.style.pointerEvents = 'none';
-            plane.style.opacity = '0.3';
-        }
+function playHappyBirthday() {
+    if (!audioContext) return;
+    
+    let time = audioContext.currentTime;
+    
+    happyBirthdayNotes.forEach((note, index) => {
+        const noteTime = time + (index * 0.35);
+        
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(musicGain);
+        
+        osc.frequency.setValueAtTime(note, noteTime);
+        osc.type = 'sine';
+        
+        gain.gain.setValueAtTime(0.2, noteTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.3);
+        
+        osc.start(noteTime);
+        osc.stop(noteTime + 0.3);
     });
-
-    // after animation, go to page 5
-    setTimeout(() => {
-        document.getElementById('treatCount').innerText = treatCount;
-        showPage(5);
-    }, 1000);
 }
 
-// ===== PAGE 14 - Random Balloons =====
+function playCrackersSound() {
+    if (!audioContext) return;
+    
+    musicGain.gain.linearRampToValueAtTime(0.6, audioContext.currentTime + 2);
+    
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const time = audioContext.currentTime;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(200 + Math.random() * 1000, time);
+            osc.type = 'sawtooth';
+            
+            gain.gain.setValueAtTime(0.2, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+            
+            osc.start(time);
+            osc.stop(time + 0.1);
+        }, i * 100);
+    }
+}
+
+function showPage(pageNum) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(`page-${pageNum}`).classList.add('active');
+    currentPage = pageNum;
+    
+    if (pageNum === 14) {
+        initBalloons();
+    }
+    if (pageNum === 19) {
+        startCakeFalling();
+    }
+}
+
+function nextPage() {
+    if (currentPage < 19) {
+        showPage(currentPage + 1);
+    }
+}
+
+// Page 1 Next
+document.getElementById('next-1').addEventListener('click', function() {
+    const name = document.getElementById('name-input').value;
+    if (name.trim()) {
+        startHappyBirthdayMusic();
+        nextPage();
+    } else {
+        alert('Please enter your name!');
+    }
+});
+
+// Page 2 Next
+document.getElementById('next-2').addEventListener('click', function() {
+    const year = document.getElementById('year-input').value;
+    if (year.trim()) {
+        nextPage();
+    } else {
+        alert('Please enter your birth year!');
+    }
+});
+
+// Page 3 Next
+document.getElementById('next-3').addEventListener('click', nextPage);
+
+// Page 4 - Paper Airplane Selection
+document.querySelectorAll('.airplane').forEach(plane => {
+    plane.addEventListener('click', function() {
+        if (selectedNumber) return;
+        
+        selectedNumber = this.dataset.number;
+        const number = parseInt(selectedNumber);
+        let treatCount;
+        
+        if (number === 7) treatCount = 7;
+        else if (number === 17) treatCount = 8;
+        else if (number === 23) treatCount = 5;
+        
+        this.classList.add('fly-away');
+        
+        document.querySelectorAll('.airplane').forEach(p => {
+            if (p !== this) {
+                p.style.opacity = '0.3';
+                p.style.pointerEvents = 'none';
+            }
+        });
+        
+        setTimeout(() => {
+            document.getElementById('treat-number').textContent = treatCount;
+            nextPage();
+        }, 1000);
+    });
+});
+
+// Page 5 Next
+document.getElementById('next-5').addEventListener('click', nextPage);
+
+// Options for pages 6-13
+for (let i = 6; i <= 13; i++) {
+    document.querySelectorAll(`#page-${i} .option`).forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll(`#page-${i} .option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            setTimeout(nextPage, 500);
+        });
+    });
+}
+
+// Page 15 Next
+document.getElementById('next-15').addEventListener('click', nextPage);
+
+// Page 16 Yes option
+document.getElementById('ready-yes').addEventListener('click', function() {
+    this.style.transform = 'scale(1.1)';
+    setTimeout(nextPage, 500);
+});
+
+// Page 17 Here We Go option
+document.getElementById('here-we-go').addEventListener('click', function() {
+    this.style.transform = 'scale(1.1)';
+    setTimeout(nextPage, 500);
+});
+
+// Page 18 Big Orange Yes Button
+document.getElementById('orange-yes').addEventListener('click', function() {
+    this.style.transform = 'scale(1.2)';
+    this.style.boxShadow = '0 30px 60px rgba(255,69,0,0.8)';
+    setTimeout(() => {
+        nextPage();
+    }, 500);
+});
+
+// Page 14 - Random Floating Balloons
 function initBalloons() {
-    const container = document.getElementById('balloonContainer');
+    const container = document.getElementById('balloon-random-container');
+    if (!container) return;
+    
     container.innerHTML = '';
     poppedCount = 0;
-    document.getElementById('poppedCount').innerText = '0';
-    document.getElementById('balloonMessage').innerHTML = '';
-
-    // pick 7 random indices for compliments (0-18, exclude 18)
+    document.getElementById('popped-count').textContent = poppedCount;
+    document.getElementById('balloon-message').innerHTML = '';
+    
+    // Randomly select 7 indices for compliments
     complimentIndices = [];
     while (complimentIndices.length < 7) {
-        let r = Math.floor(Math.random() * 19);
-        if (!complimentIndices.includes(r) && r !== 18) complimentIndices.push(r);
+        const randomIndex = Math.floor(Math.random() * totalBalloons);
+        if (!complimentIndices.includes(randomIndex) && randomIndex !== 18) {
+            complimentIndices.push(randomIndex);
+        }
     }
-
-    for (let i = 0; i < 19; i++) {
+    
+    // Create 19 balloons with random positions
+    for (let i = 0; i < totalBalloons; i++) {
         const balloon = document.createElement('div');
         balloon.className = 'balloon';
         balloon.dataset.index = i;
-
-        // random emoji
-        const faces = ['🎈', '🎂', '🎁', '✨', '💕'];
-        balloon.innerText = faces[Math.floor(Math.random() * faces.length)];
-
-        // random position (within container)
+        
+        // Random emoji on balloon
+        const emojis = ['🎈', '🎂', '🎁', '✨', '💕', '🌟', '🫰'];
+        balloon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Random position within container
         const left = Math.random() * 80 + 5; // 5% to 85%
-        const top = Math.random() * 60 + 5;  // 5% to 65%
+        const top = Math.random() * 70 + 5;  // 5% to 75%
         balloon.style.left = left + '%';
         balloon.style.top = top + '%';
-
-        // random float delay
-        const delay = Math.random() * 2;
-        balloon.style.animationDelay = delay + 's';
-
-        balloon.onclick = function () {
-            if (balloon.classList.contains('popped')) return;
-            balloon.classList.add('popped');
+        
+        // Random float animation
+        const duration = Math.random() * 4 + 3; // 3-7 seconds
+        const xMove = (Math.random() - 0.5) * 40;
+        const yMove = (Math.random() - 0.5) * 30;
+        
+        balloon.style.animation = `floatRandom ${duration}s ease-in-out infinite alternate`;
+        
+        // Click event
+        balloon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (this.classList.contains('popped')) return;
+            
+            this.classList.add('popped');
             poppedCount++;
-            document.getElementById('poppedCount').innerText = poppedCount;
-
-            const idx = parseInt(balloon.dataset.index);
-            let msg = '';
-            if (idx === 18) msg = specialBalloon;
-            else if (complimentIndices.includes(idx)) {
-                const pos = complimentIndices.indexOf(idx);
-                msg = compliments[pos];
+            document.getElementById('popped-count').textContent = poppedCount;
+            
+            const index = parseInt(this.dataset.index);
+            let message = '';
+            
+            if (index === 18) {
+                message = specialBalloon;
+            } else if (complimentIndices.includes(index)) {
+                const complimentIndex = complimentIndices.indexOf(index);
+                message = compliments[complimentIndex];
             } else {
-                msg = funBalloon;
+                message = funBalloon;
             }
-            document.getElementById('balloonMessage').innerHTML = msg;
-
-            if (poppedCount === 19) {
-                setTimeout(() => showPage(15), 1500);
+            
+            document.getElementById('balloon-message').innerHTML = message;
+            
+            // Add pop sound effect (simple beep)
+            if (audioContext) {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.frequency.value = 800;
+                gain.gain.value = 0.1;
+                osc.start();
+                osc.stop(audioContext.currentTime + 0.1);
             }
-        };
+            
+            // Check if all balloons popped
+            if (poppedCount === totalBalloons) {
+                setTimeout(() => {
+                    document.getElementById('balloon-message').innerHTML = "🎉 All balloons popped! 🎉";
+                    setTimeout(() => {
+                        nextPage();
+                    }, 1500);
+                }, 500);
+            }
+        });
+        
         container.appendChild(balloon);
     }
 }
 
-// ===== PAGE 19 - Single 3‑layer chocolate cake =====
+// Page 19 - Cake falling animation
 function startCakeFalling() {
-    const sky = document.getElementById('sky');
-    const finalMsg = document.getElementById('finalMessage');
-    sky.innerHTML = '';
-
-    // create one cake
-    const cake = document.createElement('div');
-    cake.className = 'falling-cake';
-
-    // three layers
-    const layer1 = document.createElement('div');
-    layer1.className = 'cake-layer layer1';
-    const layer2 = document.createElement('div');
-    layer2.className = 'cake-layer layer2';
-    const layer3 = document.createElement('div');
-    layer3.className = 'cake-layer layer3';
-
-    // candle
-    const candle = document.createElement('div');
-    candle.className = 'candle';
-    const flame = document.createElement('div');
-    flame.className = 'flame';
-    candle.appendChild(flame);
-
-    cake.appendChild(layer1);
-    cake.appendChild(layer2);
-    cake.appendChild(layer3);
-    cake.appendChild(candle);
-
-    // random left position
-    cake.style.left = Math.random() * 70 + 15 + '%'; // 15% to 85%
-    cake.style.animationDuration = '4s'; // fixed fall duration
-
-    sky.appendChild(cake);
-
-    // show message after cake falls
+    const skyContainer = document.getElementById('sky-container');
+    const finalMessage = document.getElementById('final-message-container');
+    
+    skyContainer.innerHTML = '';
+    
+    // Create falling cake
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const cake = document.createElement('div');
+            cake.className = 'falling-cake';
+            
+            // Create cake layers
+            const layer1 = document.createElement('div');
+            layer1.className = 'cake-layer layer1';
+            const layer2 = document.createElement('div');
+            layer2.className = 'cake-layer layer2';
+            const layer3 = document.createElement('div');
+            layer3.className = 'cake-layer layer3';
+            const candle = document.createElement('div');
+            candle.className = 'candle';
+            const flame = document.createElement('div');
+            flame.className = 'flame';
+            
+            candle.appendChild(flame);
+            cake.appendChild(layer1);
+            cake.appendChild(layer2);
+            cake.appendChild(layer3);
+            cake.appendChild(candle);
+            
+            cake.style.left = Math.random() * 80 + 10 + '%';
+            cake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            
+            skyContainer.appendChild(cake);
+            
+            setTimeout(() => {
+                cake.remove();
+            }, 6000);
+        }, i * 200);
+    }
+    
+    // Show final message
     setTimeout(() => {
-        finalMsg.style.display = 'block';
-    }, 4000);
+        finalMessage.style.display = 'block';
+        playCrackersSound();
+    }, 3000);
 }
 
-// ===== START =====
-showPage(1);
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    showPage(1);
+});
