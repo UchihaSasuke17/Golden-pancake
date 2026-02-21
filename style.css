@@ -121,7 +121,7 @@ body {
     text-align: center;
 }
 
-.romantic-input {
+.input-field {
     width: 100%;
     padding: 15px;
     border: 2px solid #ffb6c1;
@@ -129,14 +129,15 @@ body {
     font-size: 1rem;
     outline: none;
     background: rgba(255,182,193,0.1);
+    margin-bottom: 20px;
 }
 
-.romantic-input:focus {
+.input-field:focus {
     border-color: #ff69b4;
     box-shadow: 0 0 20px rgba(255,105,180,0.3);
 }
 
-.next-page-btn {
+.nav-btn {
     background: linear-gradient(45deg, #ff7ee6, #a07cff);
     color: white;
     border: none;
@@ -144,12 +145,11 @@ body {
     border-radius: 25px;
     font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
     float: right;
     transition: 0.3s;
 }
 
-.next-page-btn:hover {
+.nav-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(160,124,255,0.3);
 }
@@ -179,11 +179,12 @@ body {
     transition: width 0.5s;
 }
 
-.options-container {
+/* Options list */
+.option-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .option {
@@ -204,12 +205,13 @@ body {
     transform: translateY(-3px);
 }
 
-.quote-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    padding: 20px;
+/* Quote box */
+.quote-box {
+    background: rgba(255,182,193,0.2);
+    padding: 25px;
+    border-radius: 20px;
+    margin: 30px 0;
+    border: 2px dashed #ff69b4;
 }
 
 .quote-text {
@@ -220,7 +222,8 @@ body {
     text-align: center;
 }
 
-.airplanes-container {
+/* Airplane page */
+.airplane-row {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -241,13 +244,13 @@ body {
     transform: scale(1.1);
 }
 
-.plane {
+.plane-icon {
     font-size: 3rem;
     transform: rotate(-15deg);
     filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
 }
 
-.number {
+.plane-number {
     font-size: 1.5rem;
     font-weight: bold;
     color: #ff69b4;
@@ -259,6 +262,7 @@ body {
     50% { transform: translateY(-15px) rotate(-15deg); }
 }
 
+/* Treat message */
 .treat-message {
     text-align: center;
     font-size: 2rem;
@@ -278,14 +282,8 @@ body {
     50% { transform: scale(1.1); }
 }
 
-.balloon-game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.balloons-grid {
+/* Balloons */
+.balloon-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 15px;
@@ -358,15 +356,18 @@ body {
     font-size: 1rem;
     color: #a07cff;
     font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
 }
 
-.single-option-container {
+/* Single option buttons */
+.single-option {
     display: flex;
     justify-content: center;
     margin: 40px 0;
 }
 
-.yes-option, .here-we-go-option {
+.yes-btn, .go-btn {
     background: linear-gradient(135deg, #6c5ce7, #a07cff);
     color: white;
     padding: 15px 40px;
@@ -377,79 +378,52 @@ body {
     box-shadow: 0 10px 20px rgba(108,92,231,0.3);
 }
 
-.yes-option:hover, .here-we-go-option:hover {
+.yes-btn:hover, .go-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 15px 30px rgba(108,92,231,0.5);
 }
 
-.nineteen-message {
-    text-align: center;
-    margin: 40px 0;
-}
-
+/* 19 now page */
 .big-19 {
     font-size: 5rem;
     color: #ff69b4;
-    animation: pulse 1s infinite;
-}
-
-.nineteen-text {
-    font-size: 2rem;
-    color: #a07cff;
-}
-
-.friendship-quote-container {
-    background: rgba(255,182,193,0.2);
-    padding: 25px;
-    border-radius: 20px;
-    margin: 20px 0;
-    border: 2px dashed #ff69b4;
-}
-
-.friendship-quote {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #555;
     text-align: center;
-    font-style: italic;
+    animation: pulse 1s infinite;
+    margin: 30px 0;
 }
 
-.heart-container {
+/* Heart button */
+.heart-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 250px;
+    margin: 40px 0;
 }
 
-.heart-button {
+.heart-btn {
     width: 150px;
     height: 150px;
     background: linear-gradient(45deg, #ff4d6d, #ff1e4d);
-    transform: rotate(45deg);
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    box-shadow: 0 0 50px rgba(255,77,109,0.5);
-    transition: 0.3s;
-    animation: heartbeat 1.5s infinite;
-}
-
-.heart-button span {
-    transform: rotate(-45deg);
     color: white;
     font-size: 2rem;
     font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(255,77,109,0.5);
+    animation: heartbeat 1.5s infinite;
 }
 
 @keyframes heartbeat {
-    0%,100% { transform: rotate(45deg) scale(1); }
-    25% { transform: rotate(45deg) scale(1.1); }
-    50% { transform: rotate(45deg) scale(1); }
-    75% { transform: rotate(45deg) scale(1.1); }
+    0%,100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
 }
 
-.sky-container {
+/* Sky and final message */
+.sky {
     position: relative;
     width: 100%;
     height: 70vh;
@@ -462,38 +436,29 @@ body {
     font-size: 3rem;
     animation: fall linear forwards;
     filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
-    z-index: 10;
 }
 
 @keyframes fall {
-    from {
-        transform: translateY(-100px) rotate(0deg);
-    }
-    to {
-        transform: translateY(80vh) rotate(360deg);
-    }
+    from { transform: translateY(-100px) rotate(0deg); }
+    to { transform: translateY(80vh) rotate(360deg); }
 }
 
-.final-message-container {
+.final-message {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 20;
-    width: 100%;
-    padding: 20px;
-}
-
-.final-birthday-message {
     font-size: 2rem;
     color: #ff1493;
-    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
-    animation: glow 2s ease-in-out infinite;
+    text-align: center;
     background: rgba(255,255,255,0.8);
     padding: 20px;
     border-radius: 20px;
     backdrop-filter: blur(5px);
+    animation: glow 2s infinite;
+    display: none;
+    z-index: 20;
+    width: 90%;
 }
 
 @keyframes glow {
@@ -503,9 +468,7 @@ body {
 
 @media (max-width: 600px) {
     .question { font-size: 1.3rem; }
-    .balloons-grid { grid-template-columns: repeat(4, 1fr); }
     .balloon { width: 50px; height: 65px; font-size: 1rem; }
-    .heart-button { width: 120px; height: 120px; }
-    .heart-button span { font-size: 1.5rem; }
-    .final-birthday-message { font-size: 1.5rem; }
-}
+    .heart-btn { width: 120px; height: 120px; font-size: 1.5rem; }
+    .final-message { font-size: 1.5rem; }
+    }
