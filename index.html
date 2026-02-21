@@ -65,15 +65,15 @@
                     <div class="page-number">Page 4 of 19</div>
                     <h2 class="question">Choose a number</h2>
                     <div class="airplane-row">
-                        <div class="airplane" onclick="pickNumber(7)">
+                        <div class="airplane" id="plane1" onclick="flyAway(7, this)">
                             <div class="plane-icon">✈️</div>
                             <span class="plane-number">07</span>
                         </div>
-                        <div class="airplane" onclick="pickNumber(17)">
+                        <div class="airplane" id="plane2" onclick="flyAway(17, this)">
                             <div class="plane-icon">✈️</div>
                             <span class="plane-number">17</span>
                         </div>
-                        <div class="airplane" onclick="pickNumber(23)">
+                        <div class="airplane" id="plane3" onclick="flyAway(23, this)">
                             <div class="plane-icon">✈️</div>
                             <span class="plane-number">23</span>
                         </div>
@@ -235,12 +235,12 @@
                     </div>
                 </div>
 
-                <!-- PAGE 14: Balloons -->
+                <!-- PAGE 14: Balloons (random floating) -->
                 <div class="page" id="page14">
                     <div class="page-number">Page 14 of 19</div>
                     <h2 class="question">Pop the balloons! 🎈</h2>
                     <div id="balloonMessage" class="balloon-message"></div>
-                    <div class="balloon-grid" id="balloonGrid"></div>
+                    <div class="balloon-container" id="balloonContainer"></div>
                     <div class="balloon-progress"><span id="poppedCount">0</span>/19 popped</div>
                     <div class="progress-container">
                         <div class="progress-text">Journey</div>
@@ -311,7 +311,7 @@
                     </div>
                 </div>
 
-                <!-- PAGE 19: Final surprise -->
+                <!-- PAGE 19: Final surprise - single 3‑layer cake -->
                 <div class="page" id="page19">
                     <div class="page-number">The Final Page</div>
                     <div class="sky" id="sky"></div>
