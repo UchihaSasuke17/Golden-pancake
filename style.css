@@ -1,1 +1,233 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+}
 
+.container {
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.page {
+    display: none;
+    text-align: center;
+}
+
+.page.active {
+    display: block;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+input {
+    width: 90%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 2px solid #ffb6c1;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+button, .option, .yes-btn, .go-btn, .heart-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button {
+    background: linear-gradient(45deg, #ff7ee6, #a07cff);
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.option:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.quote {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    font-style: italic;
+    margin: 30px 0;
+}
+
+.airplanes {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+}
+
+.airplane {
+    background: #e0f0ff;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: float 3s ease-in-out infinite;
+}
+
+.airplane:hover {
+    background: #c0e0ff;
+    transform: scale(1.1);
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.balloons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+    padding: 20px;
+}
+
+.balloon {
+    width: 60px;
+    height: 80px;
+    background: #ff6b6b;
+    border-radius: 50% 50% 50% 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    animation: float 2s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 25px;
+    background: #888;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.balloon.popped {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.balloon-message {
+    min-height: 50px;
+    font-size: 1.2rem;
+    color: #ff69b4;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(255,182,193,0.2);
+    border-radius: 10px;
+}
+
+.progress {
+    font-size: 1.1rem;
+    color: #a07cff;
+    margin: 20px 0;
+}
+
+.big-19 {
+    font-size: 5rem;
+    color: #ff69b4;
+    margin: 30px 0;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.yes-btn {
+    background: #6c5ce7;
+    color: white;
+    font-size: 1.5rem;
+    max-width: 200px;
+    margin: 30px auto;
+}
+
+.go-btn {
+    background: #a07cff;
+    color: white;
+    font-size: 1.3rem;
+    max-width: 250px;
+    margin: 30px auto;
+}
+
+.heart-btn {
+    background: #ff4d6d;
+    color: white;
+    font-size: 2rem;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto;
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
+}
+
+.friendship-quote {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    margin: 30px 0;
+    padding: 20px;
+    border: 2px dashed #ff69b4;
+    border-radius: 15px;
+}
+
+.final-message {
+    color: #ff1493;
+    font-size: 1.8rem;
+    line-height: 1.4;
+    margin: 50px 0;
+    animation: glow 2s infinite;
+}
+
+@keyframes glow {
+    0%,100% { text-shadow: 0 0 20px #ff69b4; }
+    50% { text-shadow: 0 0 40px #ff1493; }
+}
