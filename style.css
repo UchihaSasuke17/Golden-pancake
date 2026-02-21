@@ -117,7 +117,7 @@ body {
 }
 
 .question {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #333;
     margin-bottom: 30px;
     text-align: center;
@@ -180,6 +180,40 @@ body {
     height: 100%;
     background: linear-gradient(to right, #ff7ee6, #a07cff);
     transition: width 0.5s;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.option {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(160, 124, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.option:hover {
+    background: rgba(160, 124, 255, 0.2);
+    border-color: #a07cff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.option.selected {
+    background: linear-gradient(135deg, rgba(160, 124, 255, 0.3), rgba(255, 126, 230, 0.3));
+    border-color: #ff7ee6;
+    color: #333;
 }
 
 .quote-container {
@@ -260,6 +294,143 @@ body {
     animation: pulse 1s infinite;
 }
 
+/* Balloon Game Styles */
+.balloon-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.balloons-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    padding: 20px;
+    width: 100%;
+}
+
+.balloon {
+    width: 70px;
+    height: 90px;
+    background: linear-gradient(145deg, #ff6b6b, #ff4757);
+    border-radius: 50% 50% 50% 50%;
+    position: relative;
+    cursor: pointer;
+    animation: balloonFloat 3s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 15px rgba(255,71,87,0.3);
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 25px;
+    background: #888;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.balloon::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #888;
+    border-radius: 50%;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@keyframes balloonFloat {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.balloon.popped {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.balloon-message {
+    min-height: 50px;
+    font-size: 1.2rem;
+    color: #ff69b4;
+    text-align: center;
+    padding: 10px;
+    background: rgba(255,182,193,0.2);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.balloon-progress {
+    font-size: 1rem;
+    color: #a07cff;
+    font-weight: bold;
+}
+
+.single-option-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.yes-option, .here-we-go-option {
+    background: linear-gradient(135deg, #6c5ce7, #a07cff);
+    color: white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 20px rgba(108,92,231,0.3);
+}
+
+.yes-option:hover, .here-we-go-option:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(108,92,231,0.5);
+}
+
+.nineteen-message {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.big-19 {
+    font-size: 5rem;
+    color: #ff69b4;
+    animation: pulse 1s infinite;
+}
+
+.nineteen-text {
+    font-size: 2rem;
+    color: #a07cff;
+}
+
+.friendship-quote-container {
+    background: rgba(255,182,193,0.2);
+    padding: 25px;
+    border-radius: 20px;
+    margin: 20px 0;
+    border: 2px dashed #ff69b4;
+}
+
+.friendship-quote {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    text-align: center;
+    font-style: italic;
+}
+
 .heart-container {
     display: flex;
     justify-content: center;
@@ -295,123 +466,64 @@ body {
     75% { transform: rotate(45deg) scale(1.1); }
 }
 
-.cake-container {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-}
-
-.cake {
+/* Sky and Falling Cake */
+.sky-container {
     position: relative;
-    width: 250px;
-    height: 180px;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
 }
 
-.cake-layer {
+.falling-cake {
     position: absolute;
-    border-radius: 10px 10px 5px 5px;
+    font-size: 3rem;
+    animation: fall linear forwards;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+    z-index: 10;
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-100px) rotate(0deg);
+    }
+    to {
+        transform: translateY(80vh) rotate(360deg);
+    }
+}
+
+.final-message-container {
+    position: absolute;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    animation: layerAppear 1s forwards;
-}
-
-.cake-base {
-    width: 200px;
-    height: 50px;
-    background: #8B4513;
-    bottom: 0;
-    animation-delay: 0.5s;
-}
-
-.cake-middle {
-    width: 170px;
-    height: 45px;
-    background: #A0522D;
-    bottom: 50px;
-    animation-delay: 1.5s;
-}
-
-.cake-top {
-    width: 140px;
-    height: 40px;
-    background: #D2691E;
-    bottom: 95px;
-    animation-delay: 2.5s;
-}
-
-.cake-frosting {
-    width: 150px;
-    height: 15px;
-    background: #FFB6C1;
-    border-radius: 50% 50% 0 0;
-    bottom: 135px;
-    animation-delay: 3.5s;
-}
-
-.candle {
-    position: absolute;
-    width: 10px;
-    height: 45px;
-    background: #FFD700;
-    border-radius: 5px;
-    bottom: 150px;
-    opacity: 0;
-    animation: candleAppear 0.8s forwards;
-}
-
-.candle-1 { left: 30%; animation-delay: 4.5s; }
-.candle-2 { left: 50%; transform: translateX(-50%); animation-delay: 5s; }
-.candle-3 { right: 30%; animation-delay: 5.5s; }
-
-.flame {
-    position: absolute;
-    width: 15px;
-    height: 25px;
-    background: radial-gradient(#FFD700, #FF4500);
-    border-radius: 50% 50% 20% 20%;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    animation: flameAppear 0.5s forwards, flameFlicker 0.3s infinite alternate;
-}
-
-.final-message {
-    margin-top: 30px;
-    padding: 20px;
-    background: rgba(255,182,193,0.2);
-    border-radius: 15px;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #555;
+    transform: translate(-50%, -50%);
     text-align: center;
-    font-style: italic;
+    z-index: 20;
+    width: 100%;
+    padding: 20px;
 }
 
-@keyframes layerAppear {
-    from { opacity: 0; transform: translateX(-50%) translateY(30px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+.final-birthday-message {
+    font-size: 2rem;
+    color: #ff1493;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+    animation: glow 2s ease-in-out infinite;
+    background: rgba(255,255,255,0.8);
+    padding: 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
 }
 
-@keyframes candleAppear {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes flameAppear {
-    from { opacity: 0; transform: translateX(-50%) scale(0.5); }
-    to { opacity: 1; transform: translateX(-50%) scale(1); }
-}
-
-@keyframes flameFlicker {
-    from { transform: translateX(-50%) scale(1); }
-    to { transform: translateX(-50%) scale(1.1); }
+@keyframes glow {
+    0%,100% { text-shadow: 0 0 20px #ff69b4; }
+    50% { text-shadow: 0 0 40px #ff1493; }
 }
 
 @media (max-width: 600px) {
-    .question { font-size: 1.5rem; }
-    .airplanes-container { flex-direction: column; gap: 30px; }
+    .question { font-size: 1.3rem; }
+    .balloons-grid { grid-template-columns: repeat(4, 1fr); }
+    .balloon { width: 50px; height: 65px; font-size: 1rem; }
     .heart-button { width: 120px; height: 120px; }
     .heart-button span { font-size: 1.5rem; }
-}
+    .final-birthday-message { font-size: 1.5rem; }
+    }
