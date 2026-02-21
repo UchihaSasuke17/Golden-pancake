@@ -1,99 +1,92 @@
 let currentPage = 1;
-let musicStarted = false;
 let selectedNumber = null;
-let audioContext = null;
-let musicGain = null;
-let melodyInterval = null;
+let poppedCount = 0;
+const totalBalloons = 19;
 
-// Happy Birthday melody notes
-const happyBirthdayNotes = [
-    // "Happy birthday to you"
-    523.25, 523.25, 587.33, 523.25, 698.46, 659.25,
-    // "Happy birthday to you"  
-    523.25, 523.25, 587.33, 523.25, 783.99, 698.46,
-    // "Happy birthday dear [name]" 
-    523.25, 523.25, 1046.50, 880.00, 698.46, 659.25, 587.33,
-    // "Happy birthday to you!"
-    1046.50, 1046.50, 880.00, 698.46, 783.99, 698.46
+// Compliment balloons (7)
+const compliments = [
+    "Beautiful 💕",
+    "Lovely 🌸",
+    "Unique 💞",
+    "Genuine 💖",
+    "Sweet 🍭",
+    "Precious 💎",
+    "Loyal 🤝"
 ];
 
-function startHappyBirthdayMusic() {
-    if (musicStarted) return;
-    musicStarted = true;
+// Special 19th balloon
+const specialBalloon = "You 🎂";
+
+// Fun balloons (11) - all show "Try again 😜"
+const funBalloon = "Try again 😜";
+
+// Store which balloons have compliments (randomly assigned)
+let complimentIndices = [];
+
+function initBalloons() {
+    const grid = document.getElementById('balloons-grid');
+    if (!grid) return;
     
-    try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        musicGain = audioContext.createGain();
-        musicGain.connect(audioContext.destination);
-        musicGain.gain.setValueAtTime(0.25, audioContext.currentTime);
-        
-        // Start playing immediately
-        playHappyBirthday();
-        
-        // Loop every 8 seconds
-        melodyInterval = setInterval(playHappyBirthday, 8000);
-        
-        console.log("🎵 Happy Birthday music started!");
-    } catch(e) {
-        console.log("Audio error:", e);
+    grid.innerHTML = '';
+    poppedCount = 0;
+    document.getElementById('popped-count').textContent = poppedCount;
+    document.getElementById('balloon-message').innerHTML = '';
+    
+    // Randomly select 7 indices for compliments (0-18)
+    complimentIndices = [];
+    while (complimentIndices.length < 7) {
+        const randomIndex = Math.floor(Math.random() * totalBalloons);
+        if (!complimentIndices.includes(randomIndex) && randomIndex !== 18) { // 18 is last balloon index
+            complimentIndices.push(randomIndex);
+        }
     }
-}
-
-function playHappyBirthday() {
-    if (!audioContext) return;
     
-    let time = audioContext.currentTime;
-    
-    // Play each note
-    happyBirthdayNotes.forEach((note, index) => {
-        const noteTime = time + (index * 0.35); // Slower tempo for birthday song
+    // Create 19 balloons
+    for (let i = 0; i < totalBalloons; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.dataset.index = i;
         
-        // Main melody oscillator
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
+        // Random emoji on balloon
+        const emojis = ['🎈', '🎂', '🎁', '✨', '💕', '🌟', '🫰'];
+        balloon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         
-        osc.connect(gain);
-        gain.connect(musicGain);
+        balloon.addEventListener('click', function() {
+            if (this.classList.contains('popped')) return;
+            
+            this.classList.add('popped');
+            poppedCount++;
+            document.getElementById('popped-count').textContent = poppedCount;
+            
+            const index = parseInt(this.dataset.index);
+            let message = '';
+            
+            if (index === 18) {
+                // 19th balloon special
+                message = specialBalloon;
+            } else if (complimentIndices.includes(index)) {
+                // Compliment balloon
+                const complimentIndex = complimentIndices.indexOf(index);
+                message = compliments[complimentIndex];
+            } else {
+                // Fun balloon
+                message = funBalloon;
+            }
+            
+            document.getElementById('balloon-message').innerHTML = message;
+            
+            // Check if all balloons popped
+            if (poppedCount === totalBalloons) {
+                setTimeout(() => {
+                    document.getElementById('balloon-message').innerHTML = "🎉 All balloons popped! 🎉";
+                    setTimeout(() => {
+                        nextPage();
+                    }, 1500);
+                }, 500);
+            }
+        });
         
-        osc.frequency.setValueAtTime(note, noteTime);
-        osc.type = 'sine'; // Soft sine wave for gentle sound
-        
-        // Volume envelope
-        gain.gain.setValueAtTime(0.2, noteTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.3);
-        
-        osc.start(noteTime);
-        osc.stop(noteTime + 0.3);
-    });
-}
-
-function playCrackersSound() {
-    if (!audioContext) return;
-    
-    // Increase volume for finale
-    musicGain.gain.linearRampToValueAtTime(0.6, audioContext.currentTime + 2);
-    
-    // Firework sounds
-    for (let i = 0; i < 20; i++) {
-        setTimeout(() => {
-            const time = audioContext.currentTime;
-            
-            // Pop sound
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.frequency.setValueAtTime(200 + Math.random() * 1000, time);
-            osc.type = 'sawtooth';
-            
-            gain.gain.setValueAtTime(0.2, time);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-            
-            osc.start(time);
-            osc.stop(time + 0.1);
-        }, i * 100);
+        grid.appendChild(balloon);
     }
 }
 
@@ -102,20 +95,29 @@ function showPage(pageNum) {
         page.classList.remove('active');
     });
     document.getElementById(`page-${pageNum}`).classList.add('active');
+    currentPage = pageNum;
+    
+    // Initialize balloons when page 14 is shown
+    if (pageNum === 14) {
+        initBalloons();
+    }
+    
+    // Start cake falling animation when page 19 is shown
+    if (pageNum === 19) {
+        startCakeFalling();
+    }
 }
 
 function nextPage() {
-    if (currentPage < 8) {
-        currentPage++;
-        showPage(currentPage);
+    if (currentPage < 19) {
+        showPage(currentPage + 1);
     }
 }
 
 // Page 1 Next
-document.getElementById('next-1').addEventListener('click', function() {
+document.getElementById('next-1')?.addEventListener('click', function() {
     const name = document.getElementById('name-input').value;
     if (name.trim()) {
-        startHappyBirthdayMusic();
         nextPage();
     } else {
         alert('Please enter your name!');
@@ -123,7 +125,7 @@ document.getElementById('next-1').addEventListener('click', function() {
 });
 
 // Page 2 Next
-document.getElementById('next-2').addEventListener('click', function() {
+document.getElementById('next-2')?.addEventListener('click', function() {
     const year = document.getElementById('year-input').value;
     if (year.trim()) {
         nextPage();
@@ -133,18 +135,11 @@ document.getElementById('next-2').addEventListener('click', function() {
 });
 
 // Page 3 Next
-document.getElementById('next-3').addEventListener('click', nextPage);
-
-// Page 4 Next
-document.getElementById('next-4').addEventListener('click', function() {
-    const place = document.getElementById('place-input').value;
-    if (place.trim()) {
-        nextPage();
-    } else {
-        alert('Please enter your dream place!');
-    }
+document.getElementById('next-3')?.addEventListener('click', function() {
+    nextPage();
 });
-// Page 4 - Paper Airplane Selection - FIXED
+
+// PAGE 4 - PAPER AIRPLANE NUMBERS (FIXED)
 document.querySelectorAll('#page-4 .airplane').forEach(plane => {
     plane.addEventListener('click', function() {
         if (selectedNumber) return;
@@ -167,10 +162,6 @@ document.querySelectorAll('#page-4 .airplane').forEach(plane => {
                 p.style.pointerEvents = 'none';
             }
         });
-        // Page 5 Next - Make sure this exists
-document.getElementById('next-5')?.addEventListener('click', function() {
-    nextPage();
-});
         
         // Store treat count and go to next page
         setTimeout(() => {
@@ -180,29 +171,178 @@ document.getElementById('next-5')?.addEventListener('click', function() {
     });
 });
 
-// Page 6 Next
-document.getElementById('next-6').addEventListener('click', nextPage);
+// Page 5 Next
+document.getElementById('next-5')?.addEventListener('click', function() {
+    nextPage();
+});
 
-// Page 7 Heart Button
-document.getElementById('heart-yes').addEventListener('click', function() {
-    this.style.transform = 'rotate(45deg) scale(1.2)';
+// PAGE 6 - Food Question
+document.querySelectorAll('#page-6 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-6 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 7 - Chocolate Question
+document.querySelectorAll('#page-7 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-7 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 8 - Drink Question
+document.querySelectorAll('#page-8 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-8 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 9 - Preference Question
+document.querySelectorAll('#page-9 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-9 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 10 - Adventure Question
+document.querySelectorAll('#page-10 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-10 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 11 - House Location
+document.querySelectorAll('#page-11 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-11 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 12 - Ice Cream Flavor
+document.querySelectorAll('#page-12 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-12 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// PAGE 13 - Foods as Humans
+document.querySelectorAll('#page-13 .option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.querySelectorAll('#page-13 .option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        setTimeout(() => {
+            nextPage();
+        }, 500);
+    });
+});
+
+// Page 15 Next
+document.getElementById('next-15')?.addEventListener('click', function() {
+    nextPage();
+});
+
+// Page 16 Yes option
+document.getElementById('ready-yes')?.addEventListener('click', function() {
+    this.style.transform = 'scale(1.1)';
     setTimeout(() => {
-        showPage(8);
-        startBirthdayAnimation();
+        nextPage();
     }, 500);
 });
 
-function startBirthdayAnimation() {
-    playCrackersSound();
-    
-    const finalMsg = document.getElementById('final-message');
-    finalMsg.style.opacity = '0';
+// Page 17 Here We Go option
+document.getElementById('here-we-go')?.addEventListener('click', function() {
+    this.style.transform = 'scale(1.1)';
     setTimeout(() => {
-        finalMsg.style.transition = 'opacity 2s';
-        finalMsg.style.opacity = '1';
-    }, 1000);
+        nextPage();
+    }, 500);
+});
+
+// Page 18 Heart Button
+document.getElementById('heart-yes')?.addEventListener('click', function() {
+    this.style.transform = 'rotate(45deg) scale(1.2)';
+    setTimeout(() => {
+        nextPage();
+    }, 500);
+});
+
+// Page 19 - Cake falling animation
+function startCakeFalling() {
+    const skyContainer = document.getElementById('sky-container');
+    const finalMessage = document.getElementById('final-message-container');
+    
+    // Clear any existing cakes
+    skyContainer.innerHTML = '';
+    
+    // Create 30 falling cakes
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const cake = document.createElement('div');
+            cake.className = 'falling-cake';
+            cake.textContent = '🍫🎂';
+            cake.style.left = Math.random() * 100 + '%';
+            cake.style.fontSize = (Math.random() * 2 + 2) + 'rem';
+            cake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            cake.style.animationDelay = '0s';
+            skyContainer.appendChild(cake);
+            
+            // Remove cake after animation
+            setTimeout(() => {
+                cake.remove();
+            }, 6000);
+        }, i * 150);
+    }
+    
+    // Show final message after 3 seconds
+    setTimeout(() => {
+        finalMessage.style.display = 'block';
+    }, 3000);
 }
 
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
     showPage(1);
 });
