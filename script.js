@@ -144,9 +144,8 @@ document.getElementById('next-4').addEventListener('click', function() {
         alert('Please enter your dream place!');
     }
 });
-
-// Page 5 - Paper Airplane Selection
-document.querySelectorAll('.airplane').forEach(plane => {
+// Page 4 - Paper Airplane Selection - FIXED
+document.querySelectorAll('#page-4 .airplane').forEach(plane => {
     plane.addEventListener('click', function() {
         if (selectedNumber) return;
         
@@ -158,15 +157,22 @@ document.querySelectorAll('.airplane').forEach(plane => {
         else if (number === 17) treatCount = 8;
         else if (number === 23) treatCount = 5;
         
+        // Add fly away animation to clicked plane
         this.classList.add('fly-away');
         
-        document.querySelectorAll('.airplane').forEach(p => {
+        // Fade out other planes
+        document.querySelectorAll('#page-4 .airplane').forEach(p => {
             if (p !== this) {
                 p.style.opacity = '0.3';
                 p.style.pointerEvents = 'none';
             }
         });
+        // Page 5 Next - Make sure this exists
+document.getElementById('next-5')?.addEventListener('click', function() {
+    nextPage();
+});
         
+        // Store treat count and go to next page
         setTimeout(() => {
             document.getElementById('treat-number').textContent = treatCount;
             nextPage();
