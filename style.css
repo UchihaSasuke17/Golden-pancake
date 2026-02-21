@@ -121,23 +121,23 @@ body {
     text-align: center;
 }
 
-.input-field {
+.romantic-input {
     width: 100%;
     padding: 15px;
     border: 2px solid #ffb6c1;
     border-radius: 25px;
     font-size: 1rem;
     outline: none;
+    transition: all 0.3s;
     background: rgba(255,182,193,0.1);
-    margin-bottom: 20px;
 }
 
-.input-field:focus {
+.romantic-input:focus {
     border-color: #ff69b4;
     box-shadow: 0 0 20px rgba(255,105,180,0.3);
 }
 
-.nav-btn {
+.next-page-btn {
     background: linear-gradient(45deg, #ff7ee6, #a07cff);
     color: white;
     border: none;
@@ -145,11 +145,12 @@ body {
     border-radius: 25px;
     font-size: 1rem;
     cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s;
     float: right;
-    transition: 0.3s;
 }
 
-.nav-btn:hover {
+.next-page-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(160,124,255,0.3);
 }
@@ -179,12 +180,11 @@ body {
     transition: width 0.5s;
 }
 
-/* ROMANTIC OPTIONS */
-.option-list {
+.options-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .option {
@@ -194,9 +194,9 @@ body {
     padding: 15px;
     font-size: 1.2rem;
     cursor: pointer;
+    transition: all 0.3s ease;
     text-align: center;
     color: #660033;
-    transition: 0.3s;
     box-shadow: 0 5px 15px rgba(255,105,180,0.2);
 }
 
@@ -207,12 +207,19 @@ body {
     box-shadow: 0 10px 25px rgba(255,105,180,0.4);
 }
 
-.quote-box {
-    background: rgba(255,182,193,0.2);
-    padding: 25px;
-    border-radius: 20px;
-    margin: 30px 0;
-    border: 2px dashed #ff69b4;
+.option.selected {
+    background: linear-gradient(145deg, #ff8dc7, #ff66b2);
+    border-color: #ff1493;
+    color: white;
+    transform: scale(1.05);
+}
+
+.quote-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    padding: 20px;
 }
 
 .quote-text {
@@ -223,8 +230,7 @@ body {
     text-align: center;
 }
 
-/* AIRPLANES */
-.airplane-row {
+.airplanes-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -238,20 +244,20 @@ body {
     align-items: center;
     cursor: pointer;
     animation: float 3s ease-in-out infinite;
-    transition: 0.3s;
+    transition: all 0.3s;
 }
 
 .airplane:hover {
     transform: scale(1.1);
 }
 
-.plane-icon {
+.plane {
     font-size: 3rem;
     transform: rotate(-15deg);
     filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
 }
 
-.plane-number {
+.number {
     font-size: 1.5rem;
     font-weight: bold;
     color: #ff69b4;
@@ -263,9 +269,8 @@ body {
     50% { transform: translateY(-15px) rotate(-15deg); }
 }
 
-/* FLY AWAY ANIMATION */
-.fly-away {
-    animation: flyAway 1s forwards !important;
+.airplane.fly-away {
+    animation: flyAway 1s forwards;
 }
 
 @keyframes flyAway {
@@ -292,29 +297,38 @@ body {
     50% { transform: scale(1.1); }
 }
 
-/* RANDOM BALLOONS CONTAINER */
-.balloon-container {
+.balloon-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+.balloon-random-container {
     position: relative;
     width: 100%;
-    height: 50vh;
+    height: 300px;
     margin: 20px 0;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .balloon {
     position: absolute;
-    width: 70px;
-    height: 90px;
+    width: 60px;
+    height: 80px;
     background: linear-gradient(145deg, #ff6b6b, #ff4757);
     border-radius: 50% 50% 50% 50%;
     cursor: pointer;
-    animation: balloonFloat 3s ease-in-out infinite;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     font-size: 1.5rem;
     box-shadow: 0 10px 15px rgba(255,71,87,0.3);
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 10;
 }
 
 .balloon::before {
@@ -340,14 +354,19 @@ body {
     transform: translateX(-50%);
 }
 
-@keyframes balloonFloat {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+@keyframes floatRandom {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(10px, -15px); }
+    50% { transform: translate(-10px, -25px); }
+    75% { transform: translate(15px, -10px); }
+    100% { transform: translate(-5px, 0); }
 }
 
 .balloon.popped {
     opacity: 0;
     pointer-events: none;
+    transform: scale(0) !important;
+    transition: opacity 0.3s, transform 0.5s;
 }
 
 .balloon-message {
@@ -359,81 +378,100 @@ body {
     background: rgba(255,182,193,0.2);
     border-radius: 10px;
     width: 100%;
-    margin-top: 10px;
 }
 
 .balloon-progress {
     font-size: 1rem;
     color: #a07cff;
     font-weight: bold;
-    text-align: center;
-    margin: 10px 0;
 }
 
-/* Single option buttons */
-.single-option {
+.single-option-container {
     display: flex;
     justify-content: center;
     margin: 40px 0;
 }
 
-.yes-btn, .go-btn {
+.yes-option, .here-we-go-option {
     background: linear-gradient(135deg, #6c5ce7, #a07cff);
     color: white;
     padding: 15px 40px;
     border-radius: 30px;
     font-size: 1.5rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s;
     box-shadow: 0 10px 20px rgba(108,92,231,0.3);
 }
 
-.yes-btn:hover, .go-btn:hover {
+.yes-option:hover, .here-we-go-option:hover {
     transform: scale(1.1);
     box-shadow: 0 15px 30px rgba(108,92,231,0.5);
 }
 
-/* 19 now page */
-.big-19 {
-    font-size: 5rem;
-    color: #ff69b4;
-    text-align: center;
-    animation: pulse 1s infinite;
-    margin: 30px 0;
-}
-
-/* Heart button */
-.heart-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 40px 0;
-}
-
-.heart-btn {
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(45deg, #ff4d6d, #ff1e4d);
-    border-radius: 50%;
+/* Big Orange Yes Button for Page 18 */
+.orange-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 300px;
+    margin: 40px 0;
+}
+
+.orange-yes-button {
+    background: linear-gradient(145deg, #FF8C00, #FF4500);
     color: white;
-    font-size: 2rem;
+    font-size: 3.5rem;
     font-weight: bold;
+    padding: 30px 80px;
+    border-radius: 60px;
     cursor: pointer;
-    box-shadow: 0 0 50px rgba(255,77,109,0.5);
-    animation: heartbeat 1.5s infinite;
+    box-shadow: 0 20px 40px rgba(255,69,0,0.5), 0 0 30px rgba(255,140,0,0.6);
+    transition: all 0.3s;
+    animation: pulse 1.5s infinite;
+    letter-spacing: 4px;
+    border: 4px solid rgba(255,255,255,0.3);
+    text-transform: uppercase;
 }
 
-@keyframes heartbeat {
-    0%,100% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.1); }
+.orange-yes-button:hover {
+    transform: scale(1.15);
+    box-shadow: 0 30px 50px rgba(255,69,0,0.7), 0 0 50px rgba(255,140,0,0.8);
+    background: linear-gradient(145deg, #FFA500, #FF6347);
 }
 
-/* Sky and final cake */
-.sky {
+.nineteen-message {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.big-19 {
+    font-size: 5rem;
+    color: #ff69b4;
+    animation: pulse 1s infinite;
+}
+
+.nineteen-text {
+    font-size: 2rem;
+    color: #a07cff;
+}
+
+.friendship-quote-container {
+    background: rgba(255,182,193,0.2);
+    padding: 25px;
+    border-radius: 20px;
+    margin: 20px 0;
+    border: 2px dashed #ff69b4;
+}
+
+.friendship-quote {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    text-align: center;
+    font-style: italic;
+}
+
+.sky-container {
     position: relative;
     width: 100%;
     height: 70vh;
@@ -501,22 +539,26 @@ body {
     to { transform: translateY(80vh) rotate(360deg); }
 }
 
-.final-message {
+.final-message-container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+    width: 100%;
+    padding: 20px;
+}
+
+.final-birthday-message {
     font-size: 2rem;
     color: #ff1493;
-    text-align: center;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+    animation: glow 2s ease-in-out infinite;
     background: rgba(255,255,255,0.8);
     padding: 20px;
     border-radius: 20px;
     backdrop-filter: blur(5px);
-    animation: glow 2s infinite;
-    display: none;
-    z-index: 20;
-    width: 90%;
 }
 
 @keyframes glow {
@@ -526,7 +568,7 @@ body {
 
 @media (max-width: 600px) {
     .question { font-size: 1.3rem; }
-    .balloon { width: 50px; height: 65px; font-size: 1rem; }
-    .heart-btn { width: 120px; height: 120px; font-size: 1.5rem; }
-    .final-message { font-size: 1.5rem; }
-    }
+    .balloon { width: 45px; height: 60px; font-size: 1rem; }
+    .orange-yes-button { font-size: 2.5rem; padding: 20px 50px; }
+    .final-birthday-message { font-size: 1.5rem; }
+}
